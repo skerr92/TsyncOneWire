@@ -38,6 +38,7 @@ bool TSyncOneWire::fillTxBuffer(const uint8_t* data, const bool lastByte)
         if (lastByte)
         {
             txBuffer.push(*data);
+            sessionPacket->lastByte = true;
             receivingData = false;
         }
         else
@@ -71,6 +72,7 @@ void TSyncOneWire::receiveData(void)
 {
     while (receivingData == true)
     {
+        pinMode(dataPin, INPUT);
         uint8_t data = 0;
         for (int i = 0; i < 8; i++)
         {
@@ -90,6 +92,61 @@ void TSyncOneWire::transmitData(void)
         {
             sessionPacket->dataFrame.push(txBuffer.pop());
         }
-        
+        bool sending       = true;
+        bool srcSent       = false;
+        bool dstSent       = false;
+        bool numBytesSent  = false;
+        bool dataFrameSent = false;
+        while (sending)
+        {
+            if (!srcSent)
+            {
+                int dataOut = sessionPacket->srcId;
+                for (int i = 0; i < 8; i++)
+                {
+                    digitalWrite(dataPin, (dataOut << 1));
+                }
+                srcSent = true;
+            }
+            if (!dstSent)
+            {
+                int dataOut = sessionPacket->dstId;
+                for (int i = 0; i < 8; i++)
+                {
+                    digitalWrite(dataPin, (dataOut << 1));
+                }
+                dstSent = true;
+            }
+            if (!numBytesSent)
+            {
+                int dataOut = sessionPacket->numDataBytes;
+                for (int i = 0; i < 8; i++)
+                {
+                    digitalWrite(dataPin, (dataOut << 1));
+                }
+                numBytesSent = true;
+            }
+            if (!dataFrameSent)
+            {
+                for (int j = 0; j < MAX_FRAME_SIZE; j++)
+                {
+                    int dataOut = sessionPacket->dataFrame[j];
+                    for (int i = 0; i < 8; i++)
+                    {
+                        digitalWrite(dataPin, (dataOut << 1));
+                    }
+                }
+                dataFrameSent = true;
+            }
+            if (sessionPacket->lastByte)
+            {
+                digitalWrite(dataPin, sessionPacket->lastByte);
+            }
+            if (srcSent && dstSent && numBytesSent && dataFrameSent)
+            {
+                sending = false;
+            }
+        }
+        receivingData = true;
     }
 }
