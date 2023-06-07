@@ -50,7 +50,7 @@ bool TSyncOneWire::fillTxBuffer(const uint8_t* data, const bool lastByte)
     return ret;
 }
 
-bool TSyncOneWire::unloadRxBuffer(Vector<uint8_t>& data)
+bool TSyncOneWire::unloadRxBuffer(void)
 {
     bool ret = false;
     if (rxBuffer.size() == 0)
@@ -61,19 +61,52 @@ bool TSyncOneWire::unloadRxBuffer(Vector<uint8_t>& data)
     {
         while (rxBuffer.size > 0)
         {
-            data.push(rxBuffer.pop());
+            bool srcRcv       = false;
+            bool dstRcv       = false;
+            bool numBytesRcv  = false;
+            bool dataFrameRcv = false;
+            if (!srcRcv)
+            {
+                sessionPacket->srcId = rxBuffer.pop();
+                srcId = true;
+            }
+            if (!dstRcv)
+            {
+                sessionPacket->dstId = rxBuffer.pop();
+                dstRcv = true;
+            }
+            if (hostID == dstId)
+            {
+                if (!numBytesRcv)
+                {
+                    sessionPacket->numDataBytes = rxBuffer.pop();
+                }
+                if (!dataFrameRcv)
+                {
+                    sessionPacket->dataFrame.clear();
+                    for (int j = 0; j < sessionPacket->numDataBytes; j++)
+                    {
+                        sessionPacket->dataFrame = rxBuffer.pop();
+                    }
+                }
+                ret = true;
+            }
+            else
+            {
+                ret = false;
+            }
         }
-        ret = true;
     }
     return ret;
 }
 
 void TSyncOneWire::receiveData(void)
 {
+    rxBuffer.clear();
     while (receivingData == true)
     {
         pinMode(dataPin, INPUT);
-        uint8_t data = 0;
+        
         for (int i = 0; i < 8; i++)
         {
             int inData = digitalRead(dataPin);
