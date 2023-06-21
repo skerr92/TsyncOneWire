@@ -14,17 +14,19 @@
 
 #define MAX_FRAME_SIZE 256
 #define DEFAULT_CYCLE 100 // in milliseconds
-
+/*!
+ * @brief TsyncOneWire class
+ */
 class TSyncOneWire {
 public:
   TSyncOneWire(const uint8_t ID, const int pinNum);
 
   virtual ~TSyncOneWire(void);
-
+  /// polling method
   virtual bool polling(void);
-
+  /// method to fill TX buffer
   virtual bool fillTxBuffer(const Vector<uint8_t> &data, const bool lastByte);
-
+  /// method to unload the RX buffer
   virtual bool unloadRxBuffer(Vector<uint8_t> &data);
 
 private:
