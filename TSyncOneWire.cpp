@@ -7,7 +7,7 @@
  * License: MIT
  */
 
-#include "TSyncOneWire.h"
+#include "TsyncOneWire.h"
 /*!
  * @brief Constructor
  * @param [in] ID - host ID for bus protocol
