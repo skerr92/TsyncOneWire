@@ -8,7 +8,12 @@
  */
 
 #include "TSyncOneWire.h"
-
+/*!
+ * @brief Constructor
+ * @param [in] ID - host ID for bus protocol
+ * @param [in] pinNum - arduino pin number for communicating on
+ * @return
+ */
 TSyncOneWire::TSyncOneWire(const uint8_t ID, const int pinNum)
     : hostID(ID), dataPin(pinNum), dutyCycle(100) {
   receivingData = true; // even though the default is true, we'll
@@ -19,7 +24,18 @@ TSyncOneWire::TSyncOneWire(const uint8_t ID, const int pinNum)
   sessionPacket->lastFrame = true;
 }
 
+/*!
+ * @brief Destructor
+ * @return
+ */
+
 TSyncOneWire::~TSyncOneWire() {}
+
+/*!
+ * @brief polls the bus pin for a high digital signal until it's not high
+ *        Then sets the duty cycle for the transmission
+ * @return bool once complete
+ */
 
 bool polling(void) {
   uint8_t count = 0;
@@ -30,7 +46,17 @@ bool polling(void) {
     }
     dutyCycle = count;
   }
+  return true;
 }
+
+/*!
+ * @brief Fills the TX Buffer with data to send out
+ * @param [in] data - pointer to the data to be pushed
+ *                    into the TX buffer
+ * @param [in] lastByte - specifies if this is the last
+ *                        byte to be sent
+ * @return bool once complete
+ */
 
 bool TSyncOneWire::fillTxBuffer(const uint8_t *data, const bool lastByte) {
   bool ret;
@@ -48,7 +74,10 @@ bool TSyncOneWire::fillTxBuffer(const uint8_t *data, const bool lastByte) {
   }
   return ret;
 }
-
+/*!
+ * @brief unloads the buffer of received data into the data struct
+ * @return bool once complete
+ */
 bool TSyncOneWire::unloadRxBuffer(void) {
   bool ret = false;
   if (rxBuffer.size() == 0) {
@@ -85,7 +114,11 @@ bool TSyncOneWire::unloadRxBuffer(void) {
   }
   return ret;
 }
-
+/*!
+ * @brief receives data on the bus until there are 4 cycles
+ *        of 0s received
+ * @return bool once complete
+ */
 void TSyncOneWire::receiveData(void) {
   rxBuffer.clear();
   while (receivingData == true) {
@@ -99,7 +132,10 @@ void TSyncOneWire::receiveData(void) {
     rxBuffer.push(data);
   }
 }
-
+/*!
+ * @brief transmits data over the bus
+ * @return bool once complete
+ */
 void TSyncOneWire::transmitData(void) {
   while (receivingData == false) {
     pinMode(dataPin, OUTPUT);
