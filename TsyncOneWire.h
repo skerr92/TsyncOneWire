@@ -23,11 +23,14 @@ public:
 
   virtual ~TSyncOneWire(void);
   /// polling method
+  /// @return bool when finished
   virtual bool polling(void);
   /// method to fill TX buffer
+  /// @return bool when finished
   virtual bool fillTxBuffer(const Vector<uint8_t> &data, const bool lastByte);
   /// method to unload the RX buffer
-  virtual bool unloadRxBuffer(Vector<uint8_t> &data);
+  /// @return bool when finished
+  virtual bool unloadRxBuffer(void);
 
 private:
   // Disallowed methods
