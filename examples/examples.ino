@@ -1,4 +1,4 @@
-#include "TSyncOneWire.h"
+#include "TsyncOneWire.h"
 
 void setup()
 {
