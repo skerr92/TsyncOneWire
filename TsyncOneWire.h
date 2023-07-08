@@ -10,7 +10,7 @@
 #ifndef TSYNCONEWIRE_H
 #define TSYNCONEWIRE_H
 
-#include <Vector.h>
+#include <vector.h>
 
 #define MAX_FRAME_SIZE 256
 #define DEFAULT_CYCLE 100 // in milliseconds
