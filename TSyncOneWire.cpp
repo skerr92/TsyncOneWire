@@ -91,20 +91,24 @@ bool TSyncOneWire::unloadRxBuffer(void) {
       bool dataFrameRcv = false;
       if (!srcRcv) {
         sessionPacket->srcId = rxBuffer.back();
+        rxBuffer.pop_back();
         srcRcv = true;
       }
       if (!dstRcv) {
         sessionPacket->destId = rxBuffer.back();
+        rxBuffer.pop_back();
         dstRcv = true;
       }
       if (hostID == sessionPacket->destId) {
         if (!numBytesRcv) {
           sessionPacket->numDataBytes = rxBuffer.back();
+          rxBuffer.pop_back();
         }
         if (!dataFrameRcv) {
           sessionPacket->dataFrame.clear();
           for (int j = 0; j < sessionPacket->numDataBytes; j++) {
-            sessionPacket->dataFrame = rxBuffer.back();
+            sessionPacket->dataFrame.push_back(rxBuffer.back());
+            rxBuffer.pop_back();
           }
         }
         ret = true;
@@ -127,7 +131,7 @@ void TSyncOneWire::receiveData(void) {
     uint8_t data = 0;
     for (int i = 0; i < 8; i++) {
       int inData = digitalRead(dataPin);
-      data << inData;
+      data = (data << inData);
       delay(dutyCycle);
     }
     rxBuffer.push_back(data);
@@ -185,7 +189,7 @@ void TSyncOneWire::transmitData(void) {
         dataFrameSent = true;
       }
       if (sessionPacket->lastFrame) {
-        digitalWrite(dataPin, sessionPacket->lastByte);
+        digitalWrite(dataPin, sessionPacket->lastFrame);
         delay(dutyCycle);
       }
       if (srcSent && dstSent && numBytesSent && dataFrameSent) {
