@@ -37,7 +37,7 @@ private:
     uint8_t destId;
     uint8_t srcId;
     uint8_t numDataBytes;
-    uint8_t dataFrame[MAX_FRAME_SIZE];
+    Vector<uint8_t> dataFrame[MAX_FRAME_SIZE];
     bool lastFrame;
   };
 
