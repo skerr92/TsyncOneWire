@@ -35,8 +35,8 @@ public:
 private:
   // Disallowed methods
   TSyncOneWire() = delete;
-  TsyncOneWire() = TSyncOneWire(const &TSyncOneWire);
-  TSyncOneWire operator=(const &TSyncOneWire);
+  TSyncOneWire() = TSyncOneWire(const &TsyncOneWire);
+  TSyncOneWire operator=(const &TSyncOneWire) = delete;
 
   struct TSyncPacket {
     uint8_t destId;
