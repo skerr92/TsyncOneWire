@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['polling',['polling',['../class_t_sync_one_wire.html#a5f444027a4748018e42fb3e801a24a45',1,'TSyncOneWire']]]
+  ['polling',['polling',['../class_t_sync_one_wire.html#a352f9b76809b86fd3875b28d6fe831e5',1,'TSyncOneWire']]]
 ];
