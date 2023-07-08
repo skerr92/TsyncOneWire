@@ -27,7 +27,7 @@ public:
   virtual bool polling(void);
   /// method to fill TX buffer
   /// @return bool when finished
-  virtual bool fillTxBuffer(const Vector<uint8_t> &data, const bool lastByte);
+  virtual bool fillTxBuffer(const uint8_t *data, const bool lastByte);
   /// method to unload the RX buffer
   /// @return bool when finished
   virtual bool unloadRxBuffer(void);

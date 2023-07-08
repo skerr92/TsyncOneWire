@@ -40,10 +40,10 @@ TSyncOneWire::~TSyncOneWire() {}
 bool TSyncOneWire::polling(void) {
   uint8_t count = 0;
   while (receivingData) {
-    uint8_t start = digitalRead(pinNum);
+    uint8_t start = digitalRead(dataPin);
     while (start) {
       count++;
-      start = digitalRead(pinNum);
+      start = digitalRead(dataPin);
     }
     dutyCycle = count;
   }
@@ -59,18 +59,17 @@ bool TSyncOneWire::polling(void) {
  * @return bool once complete
  */
 
-bool TSyncOneWire::fillTxBuffer(const Vector<uint8_t> &data,
-                                const bool lastByte) {
+bool TSyncOneWire::fillTxBuffer(const uint8_t *data, const bool lastByte) {
   bool ret;
   if (data == nullptr) {
     ret = false;
   } else {
     if (lastByte) {
-      txBuffer..push_back(*data);
-      sessionPacket->lastByte = true;
+      txBuffer.push_back(*data);
+      sessionPacket->lastFrame = true;
       receivingData = false;
     } else {
-      txBuffer..push_back(*data);
+      txBuffer.push_back(*data);
     }
     ret = true;
   }
@@ -91,21 +90,21 @@ bool TSyncOneWire::unloadRxBuffer(void) {
       bool numBytesRcv = false;
       bool dataFrameRcv = false;
       if (!srcRcv) {
-        sessionPacket->srcId = rxBuffer.pop_back();
+        sessionPacket->srcId = rxBuffer.back();
         srcRcv = true;
       }
       if (!dstRcv) {
-        sessionPacket->destId = rxBuffer.pop_back();
+        sessionPacket->destId = rxBuffer.back();
         dstRcv = true;
       }
       if (hostID == sessionPacket->destId) {
         if (!numBytesRcv) {
-          sessionPacket->numDataBytes = rxBuffer.pop_back();
+          sessionPacket->numDataBytes = rxBuffer.back();
         }
         if (!dataFrameRcv) {
           sessionPacket->dataFrame.clear();
           for (int j = 0; j < sessionPacket->numDataBytes; j++) {
-            sessionPacket->dataFrame = rxBuffer.pop_back();
+            sessionPacket->dataFrame = rxBuffer.back();
           }
         }
         ret = true;
@@ -131,7 +130,7 @@ void TSyncOneWire::receiveData(void) {
       data << inData;
       delay(dutyCycle);
     }
-    rxBuffer..push_back(data);
+    rxBuffer.push_back(data);
   }
 }
 /*!
@@ -142,7 +141,8 @@ void TSyncOneWire::transmitData(void) {
   while (receivingData == false) {
     pinMode(dataPin, OUTPUT);
     while (txBuffer.size() > 0) {
-      sessionPacket->dataFrame..push_back(txBuffer.pop_back());
+      sessionPacket->dataFrame.push_back(txBuffer.back());
+      txBuffer.pop_back();
     }
     bool sending = true;
     bool srcSent = false;
