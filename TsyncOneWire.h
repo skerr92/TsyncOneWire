@@ -33,11 +33,6 @@ public:
   virtual bool unloadRxBuffer(void);
 
 private:
-  // Disallowed methods
-  TSyncOneWire() = delete;
-  TSyncOneWire() = TSyncOneWire(const &TsyncOneWire);
-  TSyncOneWire operator=(const &TSyncOneWire) = delete;
-
   struct TSyncPacket {
     uint8_t destId;
     uint8_t srcId;
