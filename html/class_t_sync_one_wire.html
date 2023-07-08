@@ -83,9 +83,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a352f9b76809b86fd3875b28d6fe831e5"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_sync_one_wire.html#a352f9b76809b86fd3875b28d6fe831e5">polling</a> (void)</td></tr>
 <tr class="memdesc:a352f9b76809b86fd3875b28d6fe831e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">polls the bus pin for a high digital signal until it's not high Then sets the duty cycle for the transmission  <a href="#a352f9b76809b86fd3875b28d6fe831e5">More...</a><br /></td></tr>
 <tr class="separator:a352f9b76809b86fd3875b28d6fe831e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e449a6b3312c287d2bcd67ab36b5718"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_sync_one_wire.html#a1e449a6b3312c287d2bcd67ab36b5718">fillTxBuffer</a> (const Vector&lt; uint8_t &gt; &amp;data, const bool lastByte)</td></tr>
-<tr class="memdesc:a1e449a6b3312c287d2bcd67ab36b5718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the TX Buffer with data to send out.  <a href="#a1e449a6b3312c287d2bcd67ab36b5718">More...</a><br /></td></tr>
-<tr class="separator:a1e449a6b3312c287d2bcd67ab36b5718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa534621a2d2462d89ba05e6db055ece2"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_sync_one_wire.html#aa534621a2d2462d89ba05e6db055ece2">fillTxBuffer</a> (const uint8_t *data, const bool lastByte)</td></tr>
+<tr class="memdesc:aa534621a2d2462d89ba05e6db055ece2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the TX Buffer with data to send out.  <a href="#aa534621a2d2462d89ba05e6db055ece2">More...</a><br /></td></tr>
+<tr class="separator:aa534621a2d2462d89ba05e6db055ece2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97e08a99c3f2901c3239feee8d5fcae5"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_sync_one_wire.html#a97e08a99c3f2901c3239feee8d5fcae5">unloadRxBuffer</a> (void)</td></tr>
 <tr class="memdesc:a97e08a99c3f2901c3239feee8d5fcae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">unloads the buffer of received data into the data struct  <a href="#a97e08a99c3f2901c3239feee8d5fcae5">More...</a><br /></td></tr>
 <tr class="separator:a97e08a99c3f2901c3239feee8d5fcae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,8 +192,8 @@ bool once complete </dd></dl>
 
 </div>
 </div>
-<a id="a1e449a6b3312c287d2bcd67ab36b5718"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e449a6b3312c287d2bcd67ab36b5718">&#9670;&nbsp;</a></span>fillTxBuffer()</h2>
+<a id="aa534621a2d2462d89ba05e6db055ece2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa534621a2d2462d89ba05e6db055ece2">&#9670;&nbsp;</a></span>fillTxBuffer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -204,7 +204,7 @@ bool once complete </dd></dl>
         <tr>
           <td class="memname">bool TSyncOneWire::fillTxBuffer </td>
           <td>(</td>
-          <td class="paramtype">const Vector&lt; uint8_t &gt; &amp;&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
